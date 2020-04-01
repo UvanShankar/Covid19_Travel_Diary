@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,7 +17,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +29,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +48,7 @@ public class UserScreenActivity extends AppCompatActivity implements GoogleApiCl
     GoogleApiClient googleApiClient;
     FusedLocationProviderClient fusedLocationProviderClient;
     TextView t1;
-    EditText e1,e2,e3,e4;
+    EditText e1,e2,e3,e4,e5;
     Geocoder geocoder=null;
     String addaftergeocoding,lat,lon;
     @Override
@@ -53,6 +62,7 @@ addaftergeocoding="";
         e2=findViewById(R.id.editText2);
         e3=findViewById(R.id.editText3);
         e4=findViewById(R.id.editText4);
+        e5=findViewById(R.id.editText6);
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         e2.setText(currentDate);
@@ -155,6 +165,32 @@ addaftergeocoding="";
             });
         }
     }
+
+    public void uploadbtn(View view) {
+
+
+        HashMap<String,String> map=new HashMap<>();
+        map.put("CompanyName", e1.getText().toString());
+        map.put("Date",e2.getText().toString());
+        map.put("Time",e3.getText().toString());
+        map.put("Des",e4.getText().toString());
+        map.put("Allow",e5.getText().toString());
+        map.put("Lat",lat);
+        map.put("Long",lon);
+        map.put("Address",addaftergeocoding);
+        FirebaseDatabase.getInstance().getReference().child("my_users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Updated_Post").push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(UserScreenActivity.this,"Uploaded",Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UserScreenActivity.this,e.getMessage()+e.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public class LookUpAddress extends AsyncTask<Location,Void, ArrayList<String>>
     {
 
@@ -213,5 +249,39 @@ addaftergeocoding="";
                 t1.setText(addaftergeocoding);
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FirebaseAuth.getInstance().signOut();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu2,menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId()==R.id.logoutadmin)
+        {
+            FirebaseAuth.getInstance().signOut();
+            finish();
+            Intent in=new Intent(UserScreenActivity.this,UserLoginActivity.class);
+            startActivity(in);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void layoutclicked(View v)
+    {try {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+    catch(Exception e)
+    {
+        e.printStackTrace();
+    }
     }
 }

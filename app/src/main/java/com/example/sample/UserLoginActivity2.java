@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,6 +30,9 @@ FirebaseAuth mAuth;
     }
 
     public void Nextbtn(View view) {
+        if (e1.getText().toString().equals("") || e2.getText().toString().equals("") ) {
+            Toast.makeText(UserLoginActivity2.this, "Fill all the columns", Toast.LENGTH_SHORT).show();
+        } else{
         FirebaseUser user = mAuth.getCurrentUser();
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -45,5 +49,15 @@ FirebaseAuth mAuth;
         FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("phonenumber").setValue(e2.getText().toString());
         Intent indent=new Intent(UserLoginActivity2.this,UserScreenActivity.class);
         startActivity(indent);
+    }}
+    public void layoutclicked(View v)
+    {try {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+    catch(Exception e)
+    {
+        e.printStackTrace();
+    }
     }
 }

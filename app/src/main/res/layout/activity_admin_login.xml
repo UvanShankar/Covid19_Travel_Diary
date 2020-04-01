@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/con1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="layoutclicked"
     tools:context=".AdminLoginActivity">
 
     <TextView
@@ -18,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/useremailid2"
+        android:id="@+id/adminemailid"
         android:layout_width="302dp"
         android:layout_height="71dp"
         android:layout_marginTop="66dp"
@@ -41,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/useremailid2" />
+        app:layout_constraintTop_toBottomOf="@+id/adminemailid" />
 
     <Button
         android:id="@+id/button3"
