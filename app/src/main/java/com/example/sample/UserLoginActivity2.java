@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class UserLoginActivity2 extends AppCompatActivity {
 EditText e1,e2;
+    int i,j;
 FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ FirebaseAuth mAuth;
         if (e1.getText().toString().equals("") || e2.getText().toString().equals("") ) {
             Toast.makeText(UserLoginActivity2.this, "Fill all the columns", Toast.LENGTH_SHORT).show();
         } else{
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(e1.getText().toString()).build();
@@ -44,11 +46,25 @@ FirebaseAuth mAuth;
                     Toast.makeText(UserLoginActivity2.this, "User profile updated.",Toast.LENGTH_LONG).show();
                 }
             }
+        }); i=0;j=0;
+        FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("username").setValue(e1.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("currentlocationlatitude").setValue("13.077");
+                FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("currentlocationlongitude").setValue("80.180");
+                FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("currentlocationtime").setValue("0.0");
+                FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("phonenumber").setValue(e2.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Intent indent=new Intent(UserLoginActivity2.this,UserScreenActivity.class);
+                        startActivity(indent);
+                    }
+                });
+            }
         });
-        FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("username").setValue(e1.getText().toString());
-        FirebaseDatabase.getInstance().getReference().child("my_users").child(user.getUid()).child("phonenumber").setValue(e2.getText().toString());
-        Intent indent=new Intent(UserLoginActivity2.this,UserScreenActivity.class);
-        startActivity(indent);
+
+
     }}
     public void layoutclicked(View v)
     {try {

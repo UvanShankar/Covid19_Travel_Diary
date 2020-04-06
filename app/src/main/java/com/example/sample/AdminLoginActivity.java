@@ -48,7 +48,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 Log.d("uvan","onuuuuu");
                 user.add(dataSnapshot.child("username").getValue().toString());
                 //pass.add("0");
-                pass.add(dataSnapshot.child("pass").getValue().toString());
+                 pass.add(dataSnapshot.child("pass").getValue().toString());
             }
 
             @Override

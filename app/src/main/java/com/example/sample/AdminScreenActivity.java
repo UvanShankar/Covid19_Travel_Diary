@@ -113,6 +113,11 @@ startActivity(in);
             Intent in=new Intent(AdminScreenActivity.this,AdminLoginActivity.class);
             startActivity(in);
         }
+        else if(item.getItemId()==R.id.Itemmap);
+        {
+            Intent intent=new Intent(AdminScreenActivity.this,MapsActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 }

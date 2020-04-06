@@ -42,7 +42,7 @@ public class ViewUserActivity extends AppCompatActivity {
         Intent ind=getIntent();
          idd=ind.getStringExtra("userid");
         final ProgressDialog po = new ProgressDialog(this);
-        po.setMessage("Signing In" );
+        po.setMessage("Loading" );
         po.show();
         arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,6 +92,7 @@ public class ViewUserActivity extends AppCompatActivity {
             }
         });
 
+        po.dismiss();
 
     }
 }

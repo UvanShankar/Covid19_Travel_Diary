@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ViewPostDetails extends AppCompatActivity {
-EditText e1,e2,e3,e4,e5;
+EditText e1,e2,e3,e4,e5,e13,e14;
 TextView t1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,8 @@ TextView t1;
         e3=findViewById(R.id.editText8);
         e4=findViewById(R.id.editText9);
         e5=findViewById(R.id.editText10);
+        e13=findViewById(R.id.editText13);
+        e14 =findViewById(R.id.editText14);
         t1=findViewById(R.id.textView6);
         final ProgressDialog po = new ProgressDialog(this);
         po.setMessage("Loading");
@@ -42,6 +44,9 @@ TextView t1;
                e2.setText( dataSnapshot.child("Date").getValue().toString());
                 e3.setText(dataSnapshot.child("Time").getValue().toString());
                 e4.setText(dataSnapshot.child("Des").getValue().toString());
+                e13.setText(dataSnapshot.child("compintime").getValue().toString());
+                e14.setText(dataSnapshot.child("compouttime").getValue().toString());
+
                 po.dismiss();
             }
 
